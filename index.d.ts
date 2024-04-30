@@ -1,7 +1,7 @@
 type TProject = {
   id: string
   title: string
-  desctiption: string
+  description: string
   deadline: Date
   team: string[] // IDs of members
   tasks: string[] // IDs of tasks

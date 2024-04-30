@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default function Provider({ children }: { children: React.ReactNode }) {
@@ -17,6 +18,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <AntdRegistry>{children}</AntdRegistry>
+    </QueryClientProvider>
   )
 }
