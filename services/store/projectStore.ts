@@ -9,7 +9,7 @@ type TProjectState = {
 export const useProjectStore = create<TProjectState & TProjectActions>()(
   (set) => ({
     projects: [],
-    updateProject(id, data) {},
-    removeProject(id) {}
+    updateProject: (id, data) => {},
+    removeProject: (id) => {}
   })
 )

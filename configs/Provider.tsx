@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ConfigProvider } from 'antd'
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -19,7 +20,17 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AntdRegistry>{children}</AntdRegistry>
+      <AntdRegistry>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#fa541c'
+            }
+          }}
+        >
+          {children}
+        </ConfigProvider>
+      </AntdRegistry>
     </QueryClientProvider>
   )
 }
