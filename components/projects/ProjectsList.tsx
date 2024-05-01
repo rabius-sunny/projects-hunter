@@ -9,7 +9,6 @@ export default function ProjectsList({
   data: TProject[] | undefined
   loading: boolean
 }) {
-  console.log('data', data)
   return (
     <div className='grid grid-cols-3 gap-8'>
       {data?.map((item: TProject, idx: number) => (

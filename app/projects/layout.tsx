@@ -4,7 +4,6 @@ import {
   QueryClient
 } from '@tanstack/react-query'
 import { getAllProjects } from '~/actions/projects'
-import ProjectsList from '~/components/projects/ProjectsList'
 
 export default async function ProjectsLayout({
   children
