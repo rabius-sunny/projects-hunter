@@ -16,8 +16,7 @@ type TTask = {
   description?: string
   deadline: string
   projectId: number
-  assigneeIds: number[] // IDs of members
-  assignee?: TMember[]
+  assignedTo: TMember
   status: TStatus
 }
 

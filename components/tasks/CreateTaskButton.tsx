@@ -30,7 +30,9 @@ export default function CreateTaskButton({
     const data = {
       ...values,
       id,
-      assigneeIds: [Number(values.memberId)],
+      assignedTo: members?.find(
+        (member) => member.id === Number(values.memberId)
+      ) as TMember,
       deadline: dayjs(values.deadline).format('DD-MM-YYYY')
     }
     addTask(data)

@@ -23,7 +23,7 @@ export type TTaskActions = {
     description?: string,
     deadline?: string
   ) => void
-  assignMembers: (taskId: string, memberId: number) => void
+  assignTaskToMember: (taskId: string, member: TMember) => void
   updateStatus: (id: string, status: TStatus) => void
   removeTask: (id: string) => void
   removeAllTasks: () => void

@@ -29,11 +29,11 @@ export const useTaskStorage = create<TState & TTaskActions>()(
             task.id === id ? { ...task, ...rest } : task
           )
         })),
-      assignMembers: (taskId, memberId) =>
+      assignTaskToMember: (taskId, member) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === taskId && !task.assigneeIds.includes(memberId)
-              ? { ...task, assigneeIds: [...task.assigneeIds, memberId] }
+            task.id === taskId && task.assignedTo.id !== member.id
+              ? { ...task, assignedTo: member }
               : task
           )
         })),
