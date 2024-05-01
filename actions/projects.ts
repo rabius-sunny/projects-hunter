@@ -1,11 +1,21 @@
 'use server'
 
-import projectsList from '../assets/projectsdata.json'
+import members from '~/assets/membersdata'
+import projectsList from '~/assets/projectsdata'
 
 export const getAllProjects = async () => {
   try {
-    return JSON.parse(JSON.stringify(projectsList))
+    const projectData: TProject[] = [...JSON.parse(projectsList)]
+    const membersdata: TMember[] = [...JSON.parse(members)]
+    projectData.forEach((project) => {
+      const allMembers = membersdata.filter((member: TMember) =>
+        project.memberIds.includes(member.id)
+      )
+      project.members = [...allMembers]
+    })
+
+    return projectData
   } catch {
-    return { error: 'failed to fetch projects' }
+    throw new Error('failed to fetch projects')
   }
 }

@@ -1,24 +1,27 @@
 type TProject = {
-  id: string
+  id: number
   title: string
   description: string
-  deadline: Date
-  team: string[] // IDs of members
-  tasks: string[] // IDs of tasks
+  deadline: string
+  memberIds: number[] // IDs of members
+  members: TMember[]
+  taskIds: number[] // IDs of tasks
+  tasks: TTask[]
   //   recents?: any
 }
 
 type TTask = {
-  id: string
+  id: number
   title: string
   description: string
-  deadline: Date
-  assignee: string[] // IDs of members
+  deadline: string
+  assigneeIds: number[] // IDs of members
+  assignee: TMember[]
   status: 'PLANNING' | 'COOKING' | 'EAT'
 }
 
 type TMember = {
-  id: string
+  id: number
   name: string
   designation: string
 }

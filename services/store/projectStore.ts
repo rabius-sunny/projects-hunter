@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 import { TProjectActions } from './types'
 
@@ -7,9 +8,15 @@ type TProjectState = {
 }
 
 export const useProjectStore = create<TProjectState & TProjectActions>()(
-  (set) => ({
-    projects: [],
-    updateProject: (id, data) => {},
-    removeProject: (id) => {}
-  })
+  persist(
+    (set) => ({
+      projects: [],
+      updateProject: (id, data) => {},
+      removeProject: (id) => {}
+    }),
+    {
+      name: 'projects',
+      skipHydration: true
+    }
+  )
 )

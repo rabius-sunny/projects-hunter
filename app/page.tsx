@@ -1,24 +1,11 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient
-} from '@tanstack/react-query'
-import { getAllProjects } from '~/actions/projects'
-import ProjectsList from '~/components/projects/ProjectsList'
+import Link from 'next/link'
 
-export default async function Index() {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery({
-    queryKey: ['projects'],
-    queryFn: getAllProjects
-  })
-
+export default function Index() {
   return (
     <div>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProjectsList />
-      </HydrationBoundary>
+      <Link className='text-xl text-indigo-500 font-medium' href='/projects'>
+        Go to projects
+      </Link>
     </div>
   )
 }
