@@ -1,14 +1,17 @@
 'use server'
 
+import membersList from '~/assets/fakedata/membersdata'
 import projectsList from '~/assets/fakedata/projectsdata'
-import { populateMembers } from '~/helper/client/populateData'
 
 const projectData: TProject[] = [...JSON.parse(projectsList)]
+const membersData: TMember[] = [...JSON.parse(membersList)]
+const getMembersForProject = (memberIds: number[]) =>
+  membersData.filter((member: TMember) => memberIds.includes(member.id))
 
 export const getAllProjects = async () => {
   try {
     projectData.forEach((project) => {
-      const allMembers = populateMembers(project)
+      const allMembers = getMembersForProject(project.memberIds)
       project.members = [...allMembers]
     })
 
@@ -23,12 +26,20 @@ export const getProjectById = async (id: number) => {
     const project = projectData.find((item) => item.id === id)
     if (!project) throw new Error('no project found')
 
-    const allMembers = populateMembers(project)
+    const allMembers = getMembersForProject(project.memberIds)
     project.members = [...allMembers]
 
+    return project
+  } catch {
+    throw new Error('failed to fetch project')
+  }
+}
+
+export const getAssetsData = async () => {
+  try {
     return {
-      ...project,
-      projects: projectData.map((data) => ({ id: data.id, title: data.title }))
+      projects: projectData.map((data) => ({ id: data.id, title: data.title })),
+      members: membersData
     }
   } catch {
     throw new Error('failed to fetch project')

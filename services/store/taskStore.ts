@@ -1,4 +1,3 @@
-import getUID from '~/lib/cuid'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -19,7 +18,6 @@ export const useTaskStorage = create<TState & TTaskActions>()(
           tasks: [
             ...state.tasks,
             {
-              id: getUID(),
               ...data
             }
           ]
@@ -48,6 +46,10 @@ export const useTaskStorage = create<TState & TTaskActions>()(
       removeTask: (id) =>
         set((state) => ({
           tasks: state.tasks.filter((task) => task.id !== id)
+        })),
+      removeAllTasks: () =>
+        set(() => ({
+          tasks: []
         }))
     }),
     {

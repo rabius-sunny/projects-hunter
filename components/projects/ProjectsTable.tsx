@@ -8,6 +8,7 @@ import {
   EyeTwoTone,
   SearchOutlined
 } from '@ant-design/icons'
+import { useProjectStorage } from '~/services/store/projectStore'
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd'
 import { Button, Input, Space, Table } from 'antd'
 import type { FilterDropdownProps } from 'antd/es/table/interface'
@@ -15,17 +16,13 @@ import Highlighter from 'react-highlight-words'
 
 type DataIndex = keyof TProject
 
-export default function ProjectsTable({
-  data,
-  loading
-}: {
-  data: TProject[] | undefined
-  loading: boolean
-}) {
+export default function ProjectsTable() {
   const { push } = useRouter()
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef<InputRef>(null)
+
+  const data = useProjectStorage((state) => state.projects)
 
   const handleSearch = (
     selectedKeys: string[],
@@ -160,7 +157,7 @@ export default function ProjectsTable({
       key: 'team',
       render: (_, { members }) => (
         <div className='flex items-center'>
-          {members.map((item, idx) => (
+          {members?.map((item, idx) => (
             <span
               className='bg-slate-300 mx-px rounded-full font-medium text-xs size-6 flex items-center justify-center'
               key={idx}
@@ -178,7 +175,7 @@ export default function ProjectsTable({
       width: '10%',
       sorter: (a, b) => a.taskIds.length - b.taskIds.length,
       sortDirections: ['descend', 'ascend'],
-      render: (task) => <span className='font-semibold'>{task.length}</span>
+      render: (task) => <span className='font-semibold'>{task?.length}</span>
     },
     {
       title: 'Action',
@@ -198,5 +195,5 @@ export default function ProjectsTable({
     }
   ]
 
-  return <Table loading={loading} columns={columns} dataSource={data} />
+  return <Table loading={!data.length} columns={columns} dataSource={data} />
 }

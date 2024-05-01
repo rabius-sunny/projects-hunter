@@ -2,21 +2,41 @@
 
 import { useState } from 'react'
 import { PlusCircleTwoTone } from '@ant-design/icons'
+import getUID from '~/lib/cuid'
+import { useProjectStorage } from '~/services/store/projectStore'
+import { useTaskStorage } from '~/services/store/taskStore'
 import type { FormProps } from 'antd'
 import { Button, DatePicker, Form, Input, Modal, Select, Tooltip } from 'antd'
+import dayjs from 'dayjs'
 
-type TField = Omit<TTask, 'id' | 'assigneeIds'>
+type TField = Omit<TTask, 'id'> & {
+  memberId: string
+}
 
 export default function CreateTaskButton({
   projectId,
-  allProjects
+  allProjects,
+  members
 }: {
   projectId: number
-  allProjects: { id: number; title: string }[]
+  allProjects?: { id: number; title: string }[]
+  members?: TMember[]
 }) {
+  const addTask = useTaskStorage((state) => state.addTask)
+  const addTaskToProject = useProjectStorage((state) => state.addTaskToProject)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const onFinish: FormProps<TField>['onFinish'] = async (values) => {
-    console.log('data', values)
+    const id = getUID()
+    const data = {
+      ...values,
+      id,
+      assigneeIds: [Number(values.memberId)],
+      deadline: dayjs(values.deadline).format('DD-MM-YYYY')
+    }
+    addTask(data)
+    addTaskToProject(projectId, id)
+
+    setIsModalOpen(false)
   }
   const onFinishFailed: FormProps<TField>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
@@ -74,9 +94,35 @@ export default function CreateTaskButton({
           >
             <Select
               variant='filled'
-              options={allProjects.map((project) => ({
+              options={allProjects?.map((project) => ({
                 value: project.id,
                 label: project.title
+              }))}
+            />
+          </Form.Item>
+          <Form.Item<TField>
+            rules={[
+              {
+                required: true,
+                message: 'please enter the project id for this task'
+              }
+            ]}
+            label='Assign members'
+            name='memberId'
+          >
+            <Select
+              variant='filled'
+              options={members?.map((member) => ({
+                value: member.id,
+                label: (
+                  <p>
+                    {member.name} (
+                    <span className='text-xs text-slate-400'>
+                      {member.designation}
+                    </span>
+                    )
+                  </p>
+                )
               }))}
             />
           </Form.Item>

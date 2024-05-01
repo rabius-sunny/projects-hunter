@@ -1,9 +1,9 @@
-import members from '~/assets/fakedata/membersdata'
+import { useTaskStorage } from '~/services/store/taskStore'
 
-export const populateMembers = (project: TProject) => {
-  const membersdata: TMember[] = [...JSON.parse(members)]
-
-  return membersdata.filter((member: TMember) =>
-    project.memberIds.includes(member.id)
+export const usePopulateTasks = (projectId: number, taskIds: string[]) => {
+  const tasksData = useTaskStorage((state) => state.tasks).filter(
+    (task) => task.projectId === projectId
   )
+
+  return tasksData.filter((task: TTask) => taskIds.includes(task.id))
 }

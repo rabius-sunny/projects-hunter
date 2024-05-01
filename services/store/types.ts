@@ -1,13 +1,21 @@
 export type TProjectActions = {
+  addProjects: (data: TProject[]) => void
+  addTaskToProject: (projectId: number, taskId: string) => void
+  removeTaskFromProject: (projectId: number, taskId: string) => void
+  addMemberToProject: (projectId: number, memberId: number) => void
   updateProject: (
-    id: string,
-    data: Omit<TProject, 'id' | 'team' | 'tasks'>
+    id: number,
+    data: {
+      title: string
+      description: string
+      deadline: string
+    }
   ) => void
-  removeProject: (id: string) => void
+  removeProject: (id: number) => void
 }
 
 export type TTaskActions = {
-  addTask: (data: Omit<TTask, 'id'>) => void
+  addTask: (data: TTask) => void
   dragging: (id: string | null) => void
   updateTask: (
     id: string,
@@ -18,4 +26,5 @@ export type TTaskActions = {
   assignMembers: (taskId: string, memberId: number) => void
   updateStatus: (id: string, status: TStatus) => void
   removeTask: (id: string) => void
+  removeAllTasks: () => void
 }
