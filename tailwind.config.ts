@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import colors, { cyan, emerald, slate, white } from 'tailwindcss/colors'
+import colors, { cyan, emerald, red, slate, white } from 'tailwindcss/colors'
 
 const config: Config = {
   content: [
@@ -13,6 +13,8 @@ const config: Config = {
       heading: colors.slate[700],
       text: colors.slate[600],
       black: colors.slate[800],
+      red,
+      danger: colors.red[500],
       cyan,
       emerald,
       white,

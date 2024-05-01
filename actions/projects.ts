@@ -26,7 +26,10 @@ export const getProjectById = async (id: number) => {
     const allMembers = populateMembers(project)
     project.members = [...allMembers]
 
-    return project
+    return {
+      ...project,
+      projects: projectData.map((data) => ({ id: data.id, title: data.title }))
+    }
   } catch {
     throw new Error('failed to fetch project')
   }

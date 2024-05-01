@@ -5,19 +5,20 @@ type TProject = {
   deadline: string
   memberIds: number[] // IDs of members
   members: TMember[]
-  taskIds: number[] // IDs of tasks
+  taskIds: string[] // IDs of tasks
   tasks: TTask[]
   //   recents?: any
 }
 
 type TTask = {
-  id: number
+  id: string
   title: string
-  description: string
+  description?: string
   deadline: string
+  projectId: number
   assigneeIds: number[] // IDs of members
-  assignee: TMember[]
-  status: 'PLANNING' | 'COOKING' | 'EAT'
+  assignee?: TMember[]
+  status: TStatus
 }
 
 type TMember = {
@@ -25,3 +26,5 @@ type TMember = {
   name: string
   designation: string
 }
+
+type TStatus = 'PLANNING' | 'COOKING' | 'EAT'

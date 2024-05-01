@@ -3,11 +3,11 @@ import { persist } from 'zustand/middleware'
 
 import { TProjectActions } from './types'
 
-type TProjectState = {
+type TState = {
   projects: TProject[]
 }
 
-export const useProjectStore = create<TProjectState & TProjectActions>()(
+export const useProjectStorage = create<TState & TProjectActions>()(
   persist(
     (set) => ({
       projects: [],

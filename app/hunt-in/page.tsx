@@ -5,7 +5,7 @@ import { signIn } from '~/actions/auth'
 import type { FormProps } from 'antd'
 import { Button, Checkbox, Form, Input, message } from 'antd'
 
-type FieldType = {
+type TField = {
   email: string
   password: string
   remember?: boolean
@@ -15,7 +15,7 @@ export default function HuntIn() {
   const { replace } = useRouter()
   const [messageApi, contextHolder] = message.useMessage()
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+  const onFinish: FormProps<TField>['onFinish'] = async (values) => {
     const res = await signIn(values.email, values.password)
     res.ok
       ? replace('/projects')
@@ -25,9 +25,7 @@ export default function HuntIn() {
         })
   }
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (
-    errorInfo
-  ) => {
+  const onFinishFailed: FormProps<TField>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
   return (
@@ -45,7 +43,7 @@ export default function HuntIn() {
           onFinishFailed={onFinishFailed}
           autoComplete='off'
         >
-          <Form.Item<FieldType>
+          <Form.Item<TField>
             label='Email address'
             name='email'
             rules={[
@@ -59,7 +57,7 @@ export default function HuntIn() {
             <Input placeholder='user@projects-hunter.com' />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<TField>
             label='Password'
             name='password'
             rules={[
@@ -74,7 +72,7 @@ export default function HuntIn() {
             <Input.Password placeholder='147570' />
           </Form.Item>
 
-          <Form.Item<FieldType> name='remember' valuePropName='checked'>
+          <Form.Item<TField> name='remember' valuePropName='checked'>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
