@@ -26,4 +26,4 @@ type TMember = {
   designation: string
 }
 
-type TStatus = 'PLANNING' | 'COOKING' | 'EAT'
+type TStatus = 'PLAN' | 'COOKING' | 'EAT'
