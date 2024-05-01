@@ -15,14 +15,16 @@ export const useProjectStorage = create<TState & TProjectActions>()(
         set(() => ({
           projects: data
         })),
-      addTaskToProject: (projectId, newTask) =>
+      addTaskToProject: (projectId, newTask) => {
+        console.log('project id', projectId)
         set((state) => ({
           projects: state.projects.map((project) =>
             project.id === projectId
               ? { ...project, taskIds: [...project.taskIds, newTask] }
               : project
           )
-        })),
+        }))
+      },
       removeTaskFromProject: (projectId, taskId) =>
         set((state) => ({
           projects: state.projects.map((project) =>

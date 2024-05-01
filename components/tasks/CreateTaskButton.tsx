@@ -15,11 +15,9 @@ type TField = Omit<TTask, 'id'> & {
 
 export default function CreateTaskButton({
   projectId,
-  allProjects,
   members
 }: {
   projectId: number
-  allProjects?: { id: number; title: string }[]
   members?: TMember[]
 }) {
   const addTask = useTaskStorage((state) => state.addTask)
@@ -33,6 +31,7 @@ export default function CreateTaskButton({
       assignedTo: members?.find(
         (member) => member.id === Number(values.memberId)
       ) as TMember,
+      projectId,
       deadline: dayjs(values.deadline).format('DD-MM-YYYY')
     }
     addTask(data)
@@ -83,24 +82,6 @@ export default function CreateTaskButton({
             name='deadline'
           >
             <DatePicker variant='filled' className='w-full' />
-          </Form.Item>
-          <Form.Item<TField>
-            rules={[
-              {
-                required: true,
-                message: 'please enter the project id for this task'
-              }
-            ]}
-            label='Project'
-            name='projectId'
-          >
-            <Select
-              variant='filled'
-              options={allProjects?.map((project) => ({
-                value: project.id,
-                label: project.title
-              }))}
-            />
           </Form.Item>
           <Form.Item<TField>
             rules={[

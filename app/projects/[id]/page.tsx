@@ -71,7 +71,6 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
         <div className='flex items-center justify-between py-2'>
           <h2 className='text-2xl font-me'>Tasks</h2>
           <CreateTaskButton
-            allProjects={assets?.projects}
             members={assets?.members}
             projectId={data?.id as number}
           />
@@ -80,11 +79,8 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
         <div className='grid gap-2 mt-4'>
           {tasks.length ? (
             tasks.map((task, idx) => (
-              <div className='flex items-center gap-2'>
-                <div
-                  key={idx}
-                  className='flex-1 bg-slate-100 px-4 py-2 rounded-lg'
-                >
+              <div className='flex items-center gap-2' key={idx}>
+                <div className='flex-1 bg-slate-100 px-4 py-2 rounded-lg'>
                   <h2>{task.title}</h2>
                 </div>
                 <Tooltip color='red' title='Delete this task'>

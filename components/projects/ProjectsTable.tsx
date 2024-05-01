@@ -175,7 +175,9 @@ export default function ProjectsTable() {
       width: '10%',
       sorter: (a, b) => a.taskIds.length - b.taskIds.length,
       sortDirections: ['descend', 'ascend'],
-      render: (task) => <span className='font-semibold'>{task?.length}</span>
+      render: (taskIds) => (
+        <span className='font-semibold'>{taskIds?.length}</span>
+      )
     },
     {
       title: 'Action',
