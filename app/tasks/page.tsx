@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import TaskColumn from '~/components/tasks/TaskColumn'
 import { useProjectStorage } from '~/services/store/projectStore'
@@ -18,28 +18,30 @@ export default function TaskPage() {
   }, [projectData, projectId])
 
   return (
-    <div className='max-w-6xl mx-4 md:mx-8 lg:mx-12 xl:mx-auto my-10'>
-      <h1 className='text-center text-secondary'>{project?.title}</h1>
-      <div className='mt-8 grid gap-x-6 gap-y-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
-        <TaskColumn
-          projectId={projectId}
-          title='plan'
-          status='PLAN'
-          tasks={tasks}
-        />
-        <TaskColumn
-          projectId={projectId}
-          title='coocking'
-          status='COOKING'
-          tasks={tasks}
-        />
-        <TaskColumn
-          projectId={projectId}
-          title='eat'
-          status='EAT'
-          tasks={tasks}
-        />
+    <Suspense>
+      <div className='max-w-6xl mx-4 md:mx-8 lg:mx-12 xl:mx-auto my-10'>
+        <h1 className='text-center text-secondary'>{project?.title}</h1>
+        <div className='mt-8 grid gap-x-6 gap-y-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+          <TaskColumn
+            projectId={projectId}
+            title='plan'
+            status='PLAN'
+            tasks={tasks}
+          />
+          <TaskColumn
+            projectId={projectId}
+            title='coocking'
+            status='COOKING'
+            tasks={tasks}
+          />
+          <TaskColumn
+            projectId={projectId}
+            title='eat'
+            status='EAT'
+            tasks={tasks}
+          />
+        </div>
       </div>
-    </div>
+    </Suspense>
   )
 }
