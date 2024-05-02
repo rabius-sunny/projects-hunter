@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import ProjectsList from '~/components/projects/ProjectsList'
 import ProjectsTable from '~/components/projects/ProjectsTable'
 import { useGetAllProjects } from '~/helper/server/projects'
 import { useProjectStorage } from '~/services/store/projectStore'
@@ -27,7 +26,6 @@ export default function Projects() {
   return (
     <div>
       <ProjectsTable />
-      <ProjectsList loading={fetchStatus === 'fetching'} data={data} />
     </div>
   )
 }

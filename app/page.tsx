@@ -1,11 +1,6 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export default function Index() {
-  return (
-    <div>
-      <Link className='text-xl text-indigo-500 font-medium' href='/projects'>
-        Go to projects
-      </Link>
-    </div>
-  )
+  return redirect('/projects')
 }
