@@ -26,9 +26,7 @@ export default function AssignMember({ projectId }: { projectId: number }) {
     const memberExist = currentProject?.members.find(
       (member) => member === memberId
     )
-    console.log('current project', currentProject)
-    console.log('member exist', memberExist)
-    if (memberExist) alert('exists')
+    if (memberExist) return
     addMember(
       projectId,
       assets?.members.find((member) => member.id === memberId) as TMember

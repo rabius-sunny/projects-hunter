@@ -1,18 +1,21 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRightOutlined, DeleteTwoTone } from '@ant-design/icons'
 import projectImg from '~/assets/images/project.png'
 import AssignMemberButton from '~/components/projects/AssignMemberButton'
 import CreateTaskButton from '~/components/tasks/CreateTaskButton'
+import TaskActions from '~/components/tasks/TaskActions'
 import { usePopulateTasks } from '~/helper/client/populateData'
 import { useProjectStorage } from '~/services/store/projectStore'
 import { useTaskStorage } from '~/services/store/taskStore'
-import { Avatar, Tooltip } from 'antd'
+import { Avatar, Dropdown, Input, MenuProps, Tooltip } from 'antd'
 
 export default function ProjectDetails({ params }: { params: { id: string } }) {
+  const [selectedFilter, setSelectedFilter] = useState<string>('ALL')
+  const [searchQuery, setSearchQuery] = useState('')
   const { projects: projectData, removeTaskFromProject } = useProjectStorage(
     (state) => state
   )
@@ -21,6 +24,24 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
     return projectData.find((project) => project.id === Number(params.id))
   }, [projectData, params.id])
   const tasks = usePopulateTasks(Number(params.id), data?.taskIds as string[])
+  const menuItems: MenuProps['items'] = ['PLAN', 'COOKING', 'EAT', 'ALL'].map(
+    (item) => ({ label: item, key: item })
+  )
+
+  const handleFilter: MenuProps['onClick'] = ({ key }) => setSelectedFilter(key)
+
+  const filteredTasks = useMemo(() => {
+    const filtered = tasks.filter((task) => {
+      const searchTask = task.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+      return (
+        (selectedFilter === 'ALL' || selectedFilter === task.status) &&
+        searchTask
+      )
+    })
+    return filtered
+  }, [tasks, searchQuery, selectedFilter])
 
   const handleRemoveTask = (taskId: string) => {
     removeTask(taskId)
@@ -80,20 +101,35 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
           <CreateTaskButton compact projectId={data?.id as number} />
         </div>
         <hr />
-        <div className='grid gap-2 mt-4'>
-          {tasks.length ? (
-            tasks.map((task, idx) => (
+        <div className='mt-4'>
+          <div className='grid grid-cols-3 gap-4'>
+            <div className='col-span-2'>
+              <Input
+                value={searchQuery}
+                onChange={({ target: { value } }) => setSearchQuery(value)}
+                placeholder='search for a task'
+              />
+            </div>
+            <div>
+              <Dropdown menu={{ items: menuItems, onClick: handleFilter }}>
+                <p className='px-3 py-1.5 rounded-lg border border-slate-300 text-sm cursor-pointer'>
+                  {selectedFilter ?? 'Select status'}
+                </p>
+              </Dropdown>
+            </div>
+          </div>
+        </div>
+        <div className='grid gap-2 mt-4 mb-20'>
+          {filteredTasks.length ? (
+            filteredTasks.map((task, idx) => (
               <div className='flex items-center gap-2' key={idx}>
                 <div className='flex-1 bg-slate-100 px-4 py-2 rounded-lg'>
                   <h2>{task.title}</h2>
                 </div>
-                <Tooltip color='red' title='Delete this task'>
-                  <DeleteTwoTone
-                    twoToneColor='red'
-                    className='text-xl'
-                    onClick={() => handleRemoveTask(task.id)}
-                  />
-                </Tooltip>
+                <TaskActions
+                  id={task.id}
+                  handleRemove={() => handleRemoveTask(task.id)}
+                />
               </div>
             ))
           ) : (
