@@ -1,16 +1,42 @@
 'use client'
 
 import { PlusCircleTwoTone } from '@ant-design/icons'
-import { Tooltip } from 'antd'
+import { useGetAssetsData } from '~/helper/server/projects'
+import { useProjectStorage } from '~/services/store/projectStore'
+import { Dropdown, MenuProps } from 'antd'
 
 export default function AssignMember({ projectId }: { projectId: number }) {
+  const { data: assets } = useGetAssetsData()
+  const addMember = useProjectStorage((state) => state.addMemberToProject)
+  const items: MenuProps['items'] = assets?.members.map((member) => ({
+    ...member,
+    key: member.id,
+    label: (
+      <p>
+        {member.name}
+        <span className='text-slate-400 text-xs'>({member.designation})</span>
+      </p>
+    )
+  }))
+  const onClick: MenuProps['onClick'] = (item) => {
+    const memberId = Number(item.key)
+    const currentProject = assets?.projects.find(
+      (project) => project.id === projectId
+    )
+    const memberExist = currentProject?.members.find(
+      (member) => member === memberId
+    )
+    console.log('current project', currentProject)
+    console.log('member exist', memberExist)
+    if (memberExist) alert('exists')
+    addMember(
+      projectId,
+      assets?.members.find((member) => member.id === memberId) as TMember
+    )
+  }
   return (
-    <Tooltip
-      placement='top'
-      title='Assign a member to this project'
-      color='cyan'
-    >
+    <Dropdown menu={{ items, onClick }}>
       <PlusCircleTwoTone className='text-4xl' twoToneColor='orangered' />
-    </Tooltip>
+    </Dropdown>
   )
 }

@@ -40,7 +40,13 @@ export const useProjectStorage = create<TState & TProjectActions>()(
         set((state) => ({
           projects: state.projects.map((project) =>
             project.id === projectId
-              ? { ...project, memberIds: [...project.memberIds, newMember] }
+              ? {
+                  ...project,
+                  memberIds: [...project.memberIds, newMember.id],
+                  members: project.memberIds.includes(newMember.id)
+                    ? project.members
+                    : [...project.members, newMember]
+                }
               : project
           )
         })),

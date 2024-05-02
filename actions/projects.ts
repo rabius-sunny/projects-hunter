@@ -38,7 +38,11 @@ export const getProjectById = async (id: number) => {
 export const getAssetsData = async () => {
   try {
     return {
-      projects: projectData.map((data) => ({ id: data.id, title: data.title })),
+      projects: projectData.map((data) => ({
+        id: data.id,
+        title: data.title,
+        members: data.memberIds
+      })),
       members: membersData
     }
   } catch {

@@ -2,7 +2,7 @@ export type TProjectActions = {
   addProjects: (data: TProject[]) => void
   addTaskToProject: (projectId: number, taskId: string) => void
   removeTaskFromProject: (projectId: number, taskId: string) => void
-  addMemberToProject: (projectId: number, memberId: number) => void
+  addMemberToProject: (projectId: number, newMember: TMember) => void
   updateProject: (
     id: number,
     data: {

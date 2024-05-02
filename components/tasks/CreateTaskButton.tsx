@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PlusCircleFilled, PlusCircleTwoTone } from '@ant-design/icons'
+import { PlusCircleTwoTone } from '@ant-design/icons'
 import { useGetAssetsData } from '~/helper/server/projects'
 import getUID from '~/lib/cuid'
 import { useProjectStorage } from '~/services/store/projectStore'
