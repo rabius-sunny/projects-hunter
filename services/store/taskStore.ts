@@ -5,24 +5,25 @@ import { TTaskActions } from './types'
 
 type TState = {
   tasks: TTask[]
-  draggingTask: string | null
+  draggedTask: string | null
 }
 
 export const useTaskStorage = create<TState & TTaskActions>()(
   persist(
     (set) => ({
       tasks: [],
-      draggingTask: null,
+      draggedTask: null,
       addTask: (data) =>
         set((state) => ({
           tasks: [
             ...state.tasks,
             {
-              ...data
+              ...data,
+              status: 'PLAN'
             }
           ]
         })),
-      dragging: (id) => set({ draggingTask: id }),
+      dragging: (id) => set({ draggedTask: id }),
       updateTask: (id, ...rest) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
@@ -37,7 +38,7 @@ export const useTaskStorage = create<TState & TTaskActions>()(
               : task
           )
         })),
-      updateStatus: (id, status) =>
+      updateTaskStatus: (id, status) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === id ? { ...task, status } : task

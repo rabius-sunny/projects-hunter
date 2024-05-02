@@ -2,12 +2,12 @@
 
 import { useMemo } from 'react'
 import Image from 'next/image'
-import { DeleteTwoTone } from '@ant-design/icons'
+import Link from 'next/link'
+import { ArrowRightOutlined, DeleteTwoTone } from '@ant-design/icons'
 import projectImg from '~/assets/images/project.png'
 import AssignMemberButton from '~/components/projects/AssignMemberButton'
 import CreateTaskButton from '~/components/tasks/CreateTaskButton'
 import { usePopulateTasks } from '~/helper/client/populateData'
-import { useGetAssetsData } from '~/helper/server/projects'
 import { useProjectStorage } from '~/services/store/projectStore'
 import { useTaskStorage } from '~/services/store/taskStore'
 import { Avatar, Tooltip } from 'antd'
@@ -21,7 +21,6 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
     return projectData.find((project) => project.id === Number(params.id))
   }, [projectData, params.id])
   const tasks = usePopulateTasks(Number(params.id), data?.taskIds as string[])
-  const { data: assets } = useGetAssetsData()
 
   const handleRemoveTask = (taskId: string) => {
     removeTask(taskId)
@@ -69,11 +68,16 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
       </div>
       <div className='my-8'>
         <div className='flex items-center justify-between py-2'>
-          <h2 className='text-2xl font-me'>Tasks</h2>
-          <CreateTaskButton
-            members={assets?.members}
-            projectId={data?.id as number}
-          />
+          <div className='flex items-center gap-2'>
+            <h2 className='text-2xl'>Tasks</h2>
+            <Link
+              href={`/tasks?project=${params.id}`}
+              className='text-secondary font-medium text-sm'
+            >
+              View all <ArrowRightOutlined />
+            </Link>
+          </div>
+          <CreateTaskButton compact projectId={data?.id as number} />
         </div>
         <hr />
         <div className='grid gap-2 mt-4'>

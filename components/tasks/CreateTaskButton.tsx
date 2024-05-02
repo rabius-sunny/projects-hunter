@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { PlusCircleTwoTone } from '@ant-design/icons'
+import { PlusCircleFilled, PlusCircleTwoTone } from '@ant-design/icons'
+import { useGetAssetsData } from '~/helper/server/projects'
 import getUID from '~/lib/cuid'
 import { useProjectStorage } from '~/services/store/projectStore'
 import { useTaskStorage } from '~/services/store/taskStore'
@@ -15,11 +16,12 @@ type TField = Omit<TTask, 'id'> & {
 
 export default function CreateTaskButton({
   projectId,
-  members
+  compact
 }: {
   projectId: number
-  members?: TMember[]
+  compact?: boolean
 }) {
+  const { data: assets } = useGetAssetsData()
   const addTask = useTaskStorage((state) => state.addTask)
   const addTaskToProject = useProjectStorage((state) => state.addTaskToProject)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -28,7 +30,7 @@ export default function CreateTaskButton({
     const data = {
       ...values,
       id,
-      assignedTo: members?.find(
+      assignedTo: assets?.members?.find(
         (member) => member.id === Number(values.memberId)
       ) as TMember,
       projectId,
@@ -95,7 +97,7 @@ export default function CreateTaskButton({
           >
             <Select
               variant='filled'
-              options={members?.map((member) => ({
+              options={assets?.members?.map((member) => ({
                 value: member.id,
                 label: (
                   <p>
@@ -116,17 +118,27 @@ export default function CreateTaskButton({
           </Form.Item>
         </Form>
       </Modal>
-      <Tooltip
-        placement='top'
-        title='Create a task to this project'
-        color='cyan'
-      >
-        <PlusCircleTwoTone
+      {compact ? (
+        <Tooltip
+          placement='top'
+          title='Create a task to this project'
+          color='cyan'
+        >
+          <PlusCircleTwoTone
+            onClick={() => setIsModalOpen(true)}
+            className='text-4xl'
+            twoToneColor='orangered'
+          />
+        </Tooltip>
+      ) : (
+        <div
           onClick={() => setIsModalOpen(true)}
-          className='text-4xl'
-          twoToneColor='orangered'
-        />
-      </Tooltip>
+          className='flex flex-col items-center gap-2 bg-white/80 p-4 rounded-lg shadow cursor-pointer'
+        >
+          <PlusCircleTwoTone twoToneColor='gray' className='text-2xl' />
+          <p className='text-sm'>Create a new task</p>
+        </div>
+      )}
     </div>
   )
 }
