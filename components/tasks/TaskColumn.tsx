@@ -42,7 +42,7 @@ export default function TaskColumn({
       >
         {title}
       </div>
-      <div className='bg-slate-200/70 p-4 h-[80vh] overflow-y-auto'>
+      <div className='bg-slate-200/70 p-4 h-[70vh] overflow-y-auto'>
         <div className='grid gap-3'>
           {filteredTasks.map((task) => (
             <TaskCard
