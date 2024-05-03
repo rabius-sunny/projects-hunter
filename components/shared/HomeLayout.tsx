@@ -2,15 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ProjectOutlined, SafetyOutlined } from '@ant-design/icons'
-import { Layout, Menu, theme } from 'antd'
+import { ProjectOutlined } from '@ant-design/icons'
+import { Layout, theme } from 'antd'
 
 const { Content, Footer, Sider } = Layout
 
-const items = [
-  { icon: ProjectOutlined, href: '/projects', label: 'Projects' },
-  { icon: SafetyOutlined, href: '/hunt-in', label: 'Login' }
-]
+const items = [{ icon: ProjectOutlined, href: '/projects', label: 'Projects' }]
 
 export default function HomeLayout({
   children
