@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons'
 import { useProjectStorage } from '~/services/store/projectStore'
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd'
-import { Button, Input, message, Popconfirm, Space, Table } from 'antd'
+import { Button, Input, message, Popconfirm, Space, Table, Tooltip } from 'antd'
 import type { FilterDropdownProps } from 'antd/es/table/interface'
 import Highlighter from 'react-highlight-words'
 
@@ -192,11 +192,13 @@ export default function ProjectsTable() {
       key: 'action',
       render: (_, data) => (
         <Space size='middle'>
-          <EyeTwoTone
-            twoToneColor='green'
-            onClick={() => push(`/projects/${data.id}`)}
-            className='text-xl'
-          />
+          <Tooltip title='View the project' color='gray'>
+            <EyeTwoTone
+              twoToneColor='green'
+              onClick={() => push(`/projects/${data.id}`)}
+              className='text-xl'
+            />
+          </Tooltip>
           <EditProjectButton id={data.id} />
           <Popconfirm
             title='Delete the project'

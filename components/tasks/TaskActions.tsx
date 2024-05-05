@@ -1,6 +1,8 @@
 import { useRouter } from 'next/navigation'
-import { DeleteTwoTone, EyeTwoTone } from '@ant-design/icons'
+import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from '@ant-design/icons'
 import { Tooltip } from 'antd'
+
+import EditTaskButton from './EditTaskButton'
 
 export default function TaskActions({
   handleRemove,
@@ -12,7 +14,7 @@ export default function TaskActions({
   const { push } = useRouter()
   return (
     <div className='flex items-center gap-2'>
-      <Tooltip title='View task details'>
+      <Tooltip title='View task details' color='gray'>
         <EyeTwoTone
           twoToneColor='green'
           className='text-xl'
@@ -26,6 +28,7 @@ export default function TaskActions({
           onClick={() => handleRemove()}
         />
       </Tooltip>
+      <EditTaskButton id={id} />
     </div>
   )
 }

@@ -24,10 +24,10 @@ export const useTaskStorage = create<TState & TTaskActions>()(
           ]
         })),
       dragging: (id) => set({ draggedTask: id }),
-      updateTask: (id, ...rest) =>
+      updateTask: (id, data) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === id ? { ...task, ...rest } : task
+            task.id === id ? { ...task, ...data } : task
           )
         })),
       assignTaskToMember: (taskId, member) =>

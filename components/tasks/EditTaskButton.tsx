@@ -2,26 +2,26 @@
 
 import { useMemo, useState } from 'react'
 import { EditTwoTone } from '@ant-design/icons'
-import { useProjectStorage } from '~/services/store/projectStore'
+import { useTaskStorage } from '~/services/store/taskStore'
 import { Button, Form, FormProps, Input, message, Modal, Tooltip } from 'antd'
 
 type TField = {
   title: string
   description: string
 }
-export default function EditProjectButton({ id }: { id: number }) {
-  const { projects, updateProject } = useProjectStorage((state) => state)
-  const project = useMemo(() => {
-    const projectById = projects.find((item) => item.id === id)
-    return projectById
+export default function EditTaskButton({ id }: { id: string }) {
+  const { tasks, updateTask } = useTaskStorage((state) => state)
+  const task = useMemo(() => {
+    const taskById = tasks.find((item) => item.id === id)
+    return taskById
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const onFinish: FormProps<TField>['onFinish'] = async (values) => {
-    updateProject(id, { ...values })
+    updateTask(id, { ...values })
     setIsModalOpen(false)
-    message.success(`project updated successfully, id: ${id}`)
+    message.success(`task updated successfully, id: ${id}`)
   }
 
   const onFinishFailed: FormProps<TField>['onFinishFailed'] = (errorInfo) => {
@@ -31,7 +31,7 @@ export default function EditProjectButton({ id }: { id: number }) {
   return (
     <div>
       <Modal
-        title='Update project'
+        title='Update task'
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer=''
@@ -46,38 +46,38 @@ export default function EditProjectButton({ id }: { id: number }) {
         >
           <Form.Item<TField>
             rules={[{ required: true, max: 50 }]}
-            label='Project title'
+            label='Task title'
             name='title'
           >
             <Input
               allowClear
-              defaultValue={project?.title}
+              defaultValue={task?.title}
               variant='filled'
-              placeholder='enter a cool project title'
+              placeholder='enter a cool task title'
             />
           </Form.Item>
           <Form.Item<TField>
             rules={[{ required: true }]}
-            label='Project description'
+            label='Task description'
             name='description'
           >
             <Input.TextArea
               allowClear
-              defaultValue={project?.description}
+              defaultValue={task?.description}
               variant='filled'
             />
           </Form.Item>
           <Form.Item>
             <Button className='w-full' type='primary' htmlType='submit'>
-              Update project
+              Update task
             </Button>
           </Form.Item>
         </Form>
       </Modal>
-      <Tooltip title='Edit project' color='gray'>
+      <Tooltip title='Edit task' color='gray'>
         <EditTwoTone
           onClick={() => setIsModalOpen(true)}
-          twoToneColor='orange'
+          twoToneColor='darkcyan'
           className='text-xl'
         />
       </Tooltip>

@@ -18,9 +18,7 @@ export type TTaskActions = {
   dragging: (id: string | null) => void
   updateTask: (
     id: string,
-    title?: string,
-    description?: string,
-    deadline?: string
+    data: { title: string; description?: string }
   ) => void
   assignTaskToMember: (taskId: string, member: TMember) => void
   updateTaskStatus: (id: string, status: TStatus) => void
