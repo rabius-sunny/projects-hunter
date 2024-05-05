@@ -7,7 +7,7 @@ import { useProjectStorage } from '~/services/store/projectStore'
 import { useTaskStorage } from '~/services/store/taskStore'
 
 export default function Projects() {
-  const { data, fetchStatus } = useGetAllProjects()
+  const { data } = useGetAllProjects()
   const [initialized, setInitialized] = useState(false)
   const { projects, addProjects } = useProjectStorage((state) => state)
   const removeAllLocalTasks = useTaskStorage((state) => state.removeAllTasks)
@@ -15,7 +15,6 @@ export default function Projects() {
     if (data) setInitialized(true)
     // seeding data to zustand storage for further uses, in real scenario, application will talk to database and cached data instead.
     if (data && initialized && projects.length === 0) {
-      console.log('seeded')
       addProjects(data)
       removeAllLocalTasks()
     }

@@ -50,7 +50,6 @@ export const useProjectStorage = create<TState & TProjectActions>()(
               : project
           )
         })),
-
       updateProject: (id, data) =>
         set((state) => ({
           projects: state.projects.map((project) =>

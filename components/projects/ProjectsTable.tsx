@@ -10,9 +10,11 @@ import {
 } from '@ant-design/icons'
 import { useProjectStorage } from '~/services/store/projectStore'
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd'
-import { Button, Input, Space, Table } from 'antd'
+import { Button, Input, message, Popconfirm, Space, Table } from 'antd'
 import type { FilterDropdownProps } from 'antd/es/table/interface'
 import Highlighter from 'react-highlight-words'
+
+import EditProjectButton from './EditProjectButton'
 
 type DataIndex = keyof TProject
 
@@ -22,7 +24,7 @@ export default function ProjectsTable() {
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef<InputRef>(null)
 
-  const data = useProjectStorage((state) => state.projects)
+  const { projects, removeProject } = useProjectStorage((state) => state)
 
   const handleSearch = (
     selectedKeys: string[],
@@ -37,6 +39,11 @@ export default function ProjectsTable() {
   const handleReset = (clearFilters: () => void) => {
     clearFilters()
     setSearchText('')
+  }
+
+  const handleDeleteProject = (id: number) => {
+    removeProject(id)
+    message.success(`project deleted, id: ${id}`)
   }
 
   const getColumnSearchProps = (
@@ -190,12 +197,22 @@ export default function ProjectsTable() {
             onClick={() => push(`/projects/${data.id}`)}
             className='text-xl'
           />
-          <EditTwoTone twoToneColor='orange' className='text-xl' />
-          <DeleteTwoTone twoToneColor='red' className='text-xl' />
+          <EditProjectButton id={data.id} />
+          <Popconfirm
+            title='Delete the project'
+            description='Are you sure to delete this project?'
+            onConfirm={() => handleDeleteProject(data.id)}
+            okText='Yes'
+            cancelText='No'
+          >
+            <DeleteTwoTone twoToneColor='red' className='text-xl' />
+          </Popconfirm>
         </Space>
       )
     }
   ]
 
-  return <Table loading={!data.length} columns={columns} dataSource={data} />
+  return (
+    <Table loading={!projects.length} columns={columns} dataSource={projects} />
+  )
 }

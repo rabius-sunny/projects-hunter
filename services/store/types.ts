@@ -8,7 +8,6 @@ export type TProjectActions = {
     data: {
       title: string
       description: string
-      deadline: string
     }
   ) => void
   removeProject: (id: number) => void
